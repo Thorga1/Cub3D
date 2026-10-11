@@ -54,8 +54,8 @@ void	draw_texture(t_data *data, int row, int col)
 
 	if (data->wall.height <= 0)
 		return ;
-	tex = NULL;
 	distancefromtop = (float)row + (data->wall.height / 2.0f) - (H / 2.0f);
+	tex = NULL;
 	if (!data->ray.wallhit_side && data->ray.is_facing_down)
 		tex = &data->textures[0];
 	else if (!data->ray.wallhit_side && !data->ray.is_facing_down)
@@ -66,8 +66,8 @@ void	draw_texture(t_data *data, int row, int col)
 		tex = &data->textures[3];
 	if (!tex || tex->height <= 0)
 		return ;
-	data->ray.texture_y = (int)distancefromtop * \
-		((float)tex->height / (float)data->wall.height);
+	data->ray.texture_y = (int)(distancefromtop * \
+		((float)tex->height / (float)data->wall.height));
 	if (data->ray.texture_y < 0)
 		data->ray.texture_y = 0;
 	else if (data->ray.texture_y >= tex->height)
@@ -82,7 +82,8 @@ void	draw_strip(t_data *data, int col)
 	row = 0;
 	while (row < H)
 	{
-		if (row >= round(data->wall.top) && row < (data->wall.bottom))
+		if (row >= (int)(data->wall.top + 0.5) && \
+			row < (int)(data->wall.bottom))
 			draw_texture(data, row, col);
 		row++;
 	}

@@ -6,7 +6,7 @@
 /*   By: tordner <tordner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 19:43:22 by tordner           #+#    #+#             */
-/*   Updated: 2025/08/13 19:34:42 by tordner          ###   ########.fr       */
+/*   Updated: 2025/09/09 19:47:10 by tordner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	handle_map(t_data *data)
 	map_start = find_map_start(data->input);
 	if (map_start == -1)
 	{
-		printf("Please provide a map in your .cub file.\n");
+		printf("Error\nPlease provide a map in your .cub file.\n");
 		return (0);
 	}
 	data->map.map = extract_map(data->input, map_start);

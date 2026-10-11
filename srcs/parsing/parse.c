@@ -6,7 +6,7 @@
 /*   By: tordner <tordner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 19:07:33 by tordner           #+#    #+#             */
-/*   Updated: 2025/08/13 21:19:44 by tordner          ###   ########.fr       */
+/*   Updated: 2025/09/09 19:54:12 by tordner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ int	get_input(t_data *data, char *file)
 
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
-		return (write(1, "Error: invalid file, cannot be opened\n", 39), 1);
+		return (printf("Error\ninvalid file, cannot be opened\n"), 1);
 	size = read(fd, buf, 2048);
 	if (size < 0)
-		return (write(1, "Error: failed to read file\n", 28), 1);
+		return (printf("Error\nfailed to read file\n"), 1);
 	buf[size] = '\0';
 	close(fd);
 	data->input = ft_split(buf, '\n');
@@ -39,7 +39,7 @@ int	check_identifiers(t_data *data)
 		data->c_elem.c_ceiling != 1 || \
 		data->c_elem.c_floor != 1)
 	{
-		printf("Error: Duplicate or missing identifier detected.\n");
+		printf("Error\nDuplicate or missing identifier detected.\n");
 		return (0);
 	}
 	if (!validate_texture(data, data->conf.no, "NO") || \
@@ -66,7 +66,7 @@ int	parse_identifiers(t_data *data)
 		}
 		if (!is_identifier_line(data->input[i]))
 		{
-			printf("Error: invalid line found in input.\n");
+			printf("Error\ninvalid line found in input.\n");
 			return (1);
 		}
 		if (!get_identifiers(data, data->input[i]))
@@ -96,7 +96,7 @@ int	check_rectangular_map(t_data *data)
 			&& data->map.map[i][current_row_length] != '\0')
 			current_row_length++;
 		if (current_row_length != first_row_length)
-			return (write(1, "Error: Map is not rectangular\n", 30), 1);
+			return (printf("Error\nMap is not rectangular\n"), 1);
 		i++;
 	}
 	return (0);

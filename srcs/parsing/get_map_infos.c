@@ -6,7 +6,7 @@
 /*   By: tordner <tordner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 20:24:22 by tordner           #+#    #+#             */
-/*   Updated: 2025/08/13 21:37:05 by tordner          ###   ########.fr       */
+/*   Updated: 2025/08/13 20:33:39 by tordner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,21 @@ void	get_player_dir(char c, t_data *data)
 	if (c == 'N')
 	{
 		data->player.dir_x = 0;
-		data->player.dir_y = -1;
+		data->player.dir_y = 1;
 	}
 	if (c == 'S')
 	{
 		data->player.dir_x = 0;
-		data->player.dir_y = 1;
-	}
-	if (c == 'E')
-	{
-		data->player.dir_x = 1;
-		data->player.dir_y = 0;
+		data->player.dir_y = -1;
 	}
 	if (c == 'W')
 	{
 		data->player.dir_x = -1;
+		data->player.dir_y = 0;
+	}
+	if (c == 'E')
+	{
+		data->player.dir_x = 1;
 		data->player.dir_y = 0;
 	}
 	return ;

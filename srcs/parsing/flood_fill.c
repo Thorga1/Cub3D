@@ -6,7 +6,7 @@
 /*   By: tordner <tordner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 20:15:16 by tordner           #+#    #+#             */
-/*   Updated: 2025/08/12 20:31:15 by tordner          ###   ########.fr       */
+/*   Updated: 2025/09/09 19:54:43 by tordner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ static void	flood_fill(int *flood_error, char **map, int x, int y)
 int	error_flood_fill(t_data *data, int spawn_count)
 {
 	if (spawn_count != 1)
-		return (write(1, "Error: Invalid number of players\n", 34), 1);
+		return (printf("Error\nInvalid number of players\n"), 1);
 	if (data->flood_error)
-		return (write(1, "Error: Map is not closed\n", 25), 1);
+		return (printf("Error\nMap is not closed\n"), 1);
 	return (0);
 }
 

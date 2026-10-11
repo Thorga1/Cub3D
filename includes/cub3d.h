@@ -6,7 +6,7 @@
 /*   By: tordner <tordner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 16:38:17 by tordner           #+#    #+#             */
-/*   Updated: 2025/08/13 21:35:02 by tordner          ###   ########.fr       */
+/*   Updated: 2025/09/09 19:42:01 by tordner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,9 @@
 # define INF_DIST 1e9
 # define EXIT_SUCCESS 0
 # define EXIT_FAIL 1
-# define SPEED 0.5
+# define SPEED 0.1
 # define TURN_ANGLE 32
+# define MIN_PERP 1e-6
 
 typedef struct s_player
 {
@@ -57,7 +58,7 @@ typedef struct s_config
 	int		ceiling_rgb[3];
 }	t_config;
 
-typedef	struct s_count_elements
+typedef struct s_count_elements
 {
 	int	c_no;
 	int	c_so;
@@ -118,6 +119,13 @@ typedef struct s_mlx
 	void	*win_ptr;
 }	t_mlx;
 
+typedef struct s_ctx
+{
+	double	player_facing_angle;
+	double	fov_start;
+	double	dist_proj_plane;
+	double	delta;
+}	t_ctx;
 
 typedef struct s_data
 {
@@ -134,57 +142,54 @@ typedef struct s_data
 	t_img		textures[4];
 }			t_data;
 
-int		errors(int ac, char **av);
-int		ft_exit(t_data *data, int end);
+int				errors(int ac, char **av);
+int				ft_exit(t_data *data, int end);
 
-char	**ft_split(char const *s, char c);
-int		ft_is_alpha(char c);
-int		ft_isspace(int c);
-char	*ft_strdup(const char *s);
-int		ft_strcmp(const char *s1, const char *s2);
-int		ft_strlen(const char *str);
-int		ft_atoi(const char *str);
-int		ft_isdigit(int c);
-void	pad_map_with_walls(char **map);
-void	ft_free_all(t_data *data);
+char			**ft_split(char const *s, char c);
+int				ft_is_alpha(char c);
+int				ft_isspace(int c);
+char			*ft_strdup(const char *s);
+int				ft_strcmp(const char *s1, const char *s2);
+int				ft_strlen(const char *str);
+int				ft_atoi(const char *str);
+int				ft_isdigit(int c);
+void			pad_map_with_walls(char **map);
 
-int		init_data(t_data *data);
+int				init_data(t_data *data);
 
-int		handle_input(t_data *data, char **av);
+int				handle_input(t_data *data, char **av);
 
-int		is_map_line(const char *line);
-int		is_identifier_line(const char *line);
-int		is_line_empty(const char *line);
-int		handle_map(t_data *data);
+int				is_map_line(const char *line);
+int				is_identifier_line(const char *line);
+int				is_line_empty(const char *line);
+int				handle_map(t_data *data);
 
-void	trim_trailing_spaces(char *str);
-void	get_no(t_data *data, const char *line);
-void	get_so(t_data *data, const char *line);
-void	get_ea(t_data *data, const char *line);
-void	get_we(t_data *data, const char *line);
-int		get_floor(t_data *data, const char *str);
-int		get_ceiling(t_data *data, const char *str);
+void			trim_trailing_spaces(char *str);
+void			get_no(t_data *data, const char *line);
+void			get_so(t_data *data, const char *line);
+void			get_ea(t_data *data, const char *line);
+void			get_we(t_data *data, const char *line);
+int				get_floor(t_data *data, const char *str);
+int				get_ceiling(t_data *data, const char *str);
 
-int		get_identifiers(t_data *data, const char *line);
+int				get_identifiers(t_data *data, const char *line);
 
-int		validate_texture(t_data *data, char *path, const char *label);
+int				validate_texture(t_data *data, char *path, const char *label);
 
-int		init_flood_fill(t_data *data);
-int		is_spawn(char c);
-void	get_player(t_data *data);
-void	get_map_infos(t_data *data);	
-int		ft_key(int key, t_data *data);
+int				init_flood_fill(t_data *data);
+int				is_spawn(char c);
+void			get_player(t_data *data);
+void			get_map_infos(t_data *data);	
+int				ft_key(int key, t_data *data);
 
 //mlx
-void	init_mlx(t_data *data);
-void    move_front(t_data *data);
-void    move_back(t_data *data);
-void    move_left(t_data *data);
-void    move_right(t_data *data);
-void    rotate_right(t_data *data);
-void    rotate_left(t_data *data);
-
-
+void			init_mlx(t_data *data);
+void			move_front(t_data *data);
+void			move_back(t_data *data);
+void			move_left(t_data *data);
+void			move_right(t_data *data);
+void			rotate_right(t_data *data);
+void			rotate_left(t_data *data);
 
 //init_game
 int				init_ray(t_data *data);
@@ -197,9 +202,11 @@ int				draw_game(t_data *data);
 
 //dda
 void			find_horizontal_hit(t_data *data, double xstep, double ystep);
-void			horizontal_hit(t_data *data, double ray_angle);
+void			horizontal_hit(t_data *data, double ray_angle, \
+					double xstep, double ystep);
 void			find_vertical_hit(t_data *data, double xstep, double ystep);
-void			vertical_hit(t_data *data, double ray_angle);
+void			vertical_hit(t_data *data, double ray_angle, \
+					double xstep, double ystep);
 
 //draw_strip
 int				get_pixel_color(t_img *img, int texture_x, int texture_y);
@@ -221,9 +228,25 @@ int				hit_horizontal_wall(t_data *data, double x, double y);
 int				hit_vertical_wall(t_data *data, double x, double y);
 
 //utils_2
-void			choose_nearest_hit_dist(t_data *data);
+void			choose_nearest_hit_dist(t_data *data, double hor_x, \
+					double hor_y);
 void			texture_hit_x(t_data *data);
 unsigned int	rgb_to_color(int r, int g, int b);
+int				is_valid_position(t_data *data, double x, double y);
+void			init_texture(t_data *data, t_img *tex, char *path);
+void			*ft_memset(void *b, int c, size_t len);
 
+//dda_utils
+void			protect(double a);
+double			correct_xstep_sign(t_data *d, double xstep);
+double			correct_ystep_sign(t_data *d, double ystep);
+void			calculate_wall(double perp, t_data *data);
+void			cast_hits(t_data *data, double ray_angle);
 
+//free
+void			ft_free_texutre(t_data *d);
+int				ft_end(t_data *data);
+int				ft_exit(t_data *data, int end);
+void			free_input(char **map);
+void			ft_free_all(t_data *data);
 #endif

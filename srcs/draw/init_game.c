@@ -32,6 +32,5 @@ int	init_ray(t_data *data)
 	data->ray.color = 0x87CEEB;
 	data->ray.texture_x = 0;
 	data->ray.texture_y = 0;
-	draw_ceiling_and_floor(data);
 	return (0);
 }

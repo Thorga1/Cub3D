@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_background.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thorgal <thorgal@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tordner <tordner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 16:10:56 by thorgal           #+#    #+#             */
-/*   Updated: 2025/08/08 16:59:20 by thorgal          ###   ########.fr       */
+/*   Updated: 2025/09/09 19:46:55 by tordner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	get_floor(t_data *data, const char *str)
 		str++;
 	if (parse_rgb(str, data->conf.floor_rgb))
 	{
-		printf("Invalid floor color.\n");
+		printf("Error\nInvalid floor color.\n");
 		return (0);
 	}
 	return (1);
@@ -79,7 +79,7 @@ int	get_ceiling(t_data *data, const char *str)
 		str++;
 	if (parse_rgb(str, data->conf.ceiling_rgb))
 	{
-		printf("Invalid ceiling color.\n");
+		printf("Error\nInvalid ceiling color.\n");
 		return (0);
 	}
 	return (1);

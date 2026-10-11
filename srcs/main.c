@@ -6,23 +6,11 @@
 /*   By: tordner <tordner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 16:37:39 by tordner           #+#    #+#             */
-/*   Updated: 2025/08/13 21:31:51 by tordner          ###   ########.fr       */
+/*   Updated: 2025/09/09 19:41:33 by tordner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-int	ft_exit(t_data *data, int end)
-{
-	ft_free_all(data);
-	exit(end);
-}
-
-int	ft_end(t_data *data)
-{
-	ft_exit(data, 0);
-	return (0);
-}
 
 int	main(int ac, char **av)
 {
@@ -31,6 +19,7 @@ int	main(int ac, char **av)
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (1);
+	ft_memset(data, 0, sizeof(t_data));
 	init_data(data);
 	if (errors(ac, av))
 		ft_exit(data, 1);

@@ -56,7 +56,7 @@ int	hit_horizontal_wall(t_data *data, double x, double y)
 	if (tile_x < 0 || tile_x >= data->map.max_width || \
 		tile_y < 0 || tile_y >= data->map.max_height)
 		return (1);
-	return (data->map.map[tile_y][tile_x] == '1');
+	return (data->map.dup_map[tile_y][tile_x] == '1');
 }
 
 int	hit_vertical_wall(t_data *data, double x, double y)
@@ -73,5 +73,5 @@ int	hit_vertical_wall(t_data *data, double x, double y)
 	if (tile_x < 0 || tile_x >= data->map.max_width || \
 		tile_y < 0 || tile_y >= data->map.max_height)
 		return (1);
-	return (data->map.map[tile_y][tile_x] == '1');
+	return (data->map.dup_map[tile_y][tile_x] == '1');
 }

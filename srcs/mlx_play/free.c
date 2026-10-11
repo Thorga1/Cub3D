@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tordner <tordner@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yurwang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/13 21:31:36 by tordner           #+#    #+#             */
-/*   Updated: 2025/08/13 21:36:46 by tordner          ###   ########.fr       */
+/*   Created: 2025/08/31 16:57:53 by yurwang           #+#    #+#             */
+/*   Updated: 2025/08/31 16:57:57 by yurwang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ void	free_input(char **map)
 	map = NULL;
 }
 
-void	free_parse_stuff(t_data *data)
+void	ft_free_all(t_data *data)
 {
+	ft_free_texutre(data);
 	if (data->conf.no)
 		free(data->conf.no);
 	if (data->conf.so)
@@ -42,28 +43,38 @@ void	free_parse_stuff(t_data *data)
 	free_input(data->input);
 	free_input(data->map.map);
 	free_input(data->map.dup_map);
+	free(data);
 }
 
-void	ft_free_all(t_data *data)
+int	ft_exit(t_data *data, int end)
 {
-	int	i;
+	ft_free_all(data);
+	exit(end);
+}
 
-	if (!data)
-		return ;
-	free_parse_stuff(data);
-	i = 0;
-	while (i < 4)
+int	ft_end(t_data *data)
+{
+	ft_exit(data, 0);
+	return (0);
+}
+
+void	ft_free_texutre(t_data *d)
+{
+	if (d->textures[0].ptr)
+		mlx_destroy_image(d->mlx.ptr, d->textures[0].ptr);
+	if (d->textures[1].ptr)
+		mlx_destroy_image(d->mlx.ptr, d->textures[1].ptr);
+	if (d->textures[2].ptr)
+		mlx_destroy_image(d->mlx.ptr, d->textures[2].ptr);
+	if (d->textures[3].ptr)
+		mlx_destroy_image(d->mlx.ptr, d->textures[3].ptr);
+	if (d->img.ptr)
+		mlx_destroy_image(d->mlx.ptr, d->img.ptr);
+	if (d->mlx.win_ptr)
+		mlx_destroy_window(d->mlx.ptr, d->mlx.win_ptr);
+	if (d->mlx.ptr)
 	{
-		if (data->textures[i].ptr)
-			mlx_destroy_image(data->mlx.ptr, data->textures[i].ptr);
-		i++;
+		mlx_destroy_display(d->mlx.ptr);
+		free(d->mlx.ptr);
 	}
-	if (data->img.ptr)
-		mlx_destroy_image(data->mlx.ptr, data->img.ptr);
-	if (data->mlx.win_ptr)
-		mlx_destroy_window(data->mlx.ptr, data->mlx.win_ptr);
-	if (data->mlx.ptr)
-		mlx_destroy_display(data->mlx.ptr);
-	free(data->mlx.ptr);
-	free(data);
 }

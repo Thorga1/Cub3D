@@ -6,22 +6,29 @@
 /*   By: tordner <tordner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 21:10:33 by tordner           #+#    #+#             */
-/*   Updated: 2025/08/13 21:39:11 by tordner          ###   ########.fr       */
+/*   Updated: 2025/08/13 20:17:25 by tordner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	init_texture(t_data *data, t_img *tex, char *path)
+int	ft_key(int key, t_data *data)
 {
-	tex->ptr = mlx_xpm_file_to_image(data->mlx.ptr, path, \
-		&tex->width, &tex->height);
-	if (!tex->ptr)
-		ft_exit(data, 1);
-	tex->addr = mlx_get_data_addr(tex->ptr, &tex->bpp, \
-		&tex->ll, &tex->endian);
-	if (!tex->addr)
-		ft_exit(data, 1);
+	if (key == XK_w)
+		move_front(data);
+	else if (key == XK_s)
+		move_back(data);
+	else if (key == XK_a)
+		move_left(data);
+	else if (key == XK_d)
+		move_right(data);
+	else if (key == XK_Escape)
+		ft_exit(data, 0);
+	else if (key == XK_Right)
+		rotate_right(data);
+	else if (key == XK_Left)
+		rotate_left(data);
+	return (1);
 }
 
 void	init_mlx2(t_data *data)
@@ -35,24 +42,32 @@ void	init_mlx2(t_data *data)
 void	rotate_right(t_data *data)
 {
 	double	distance;
+	double	theta;
+	double	x;
+	double	y;
 
-	data->player.dir_x = data->player.dir_x * cos(PI / TURN_ANGLE) \
-	- data->player.dir_y * sin(PI / TURN_ANGLE);
-	data->player.dir_y = data->player.dir_x * sin(PI / TURN_ANGLE) \
-	+ data->player.dir_y * cos(PI / TURN_ANGLE);
+	theta = PI / TURN_ANGLE;
+	x = data->player.dir_x;
+	y = data->player.dir_y;
+	data->player.dir_x = x * cos(theta) - y * sin(theta);
+	data->player.dir_y = x * sin(theta) + y * cos(theta);
 	distance = hypot(data->player.dir_x, data->player.dir_y);
-	data->player.dir_x /= distance;
 	data->player.dir_y /= distance;
+	data->player.dir_x /= distance;
 }
 
 void	rotate_left(t_data *data)
 {
 	double	distance;
+	double	theta;
+	double	x;
+	double	y;
 
-	data->player.dir_x = data->player.dir_x * cos(PI / TURN_ANGLE) \
-	+ data->player.dir_y * sin(PI / TURN_ANGLE);
-	data->player.dir_y = data->player.dir_y * cos(PI / TURN_ANGLE) \
-	- data->player.dir_x * sin(PI / TURN_ANGLE);
+	theta = PI / TURN_ANGLE;
+	x = data->player.dir_x;
+	y = data->player.dir_y;
+	data->player.dir_x = x * cos(-theta) - y * sin(-theta);
+	data->player.dir_y = x * sin(-theta) + y * cos(-theta);
 	distance = hypot(data->player.dir_x, data->player.dir_y);
 	data->player.dir_y /= distance;
 	data->player.dir_x /= distance;

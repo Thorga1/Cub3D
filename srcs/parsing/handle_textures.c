@@ -6,7 +6,7 @@
 /*   By: tordner <tordner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 19:17:23 by tordner           #+#    #+#             */
-/*   Updated: 2025/08/08 19:35:41 by tordner          ###   ########.fr       */
+/*   Updated: 2025/09/09 19:47:31 by tordner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,14 @@ int	validate_texture(t_data *data, char *path, const char *label)
 	char	*trimmed;
 
 	if (!path || path[0] == '\0')
-		return (printf("Error: %s path is empty\n", label), 0);
+		return (printf("Error\n%s path is empty\n", label), 0);
 	trimmed = trim_after_xpm(path);
 	if (!trimmed)
-		return (printf("Error: %s must be a .xpm file\n", label), 0);
+		return (printf("Error\n%s must be a .xpm file\n", label), 0);
 	if (!is_valid_file(trimmed))
 	{
 		free(trimmed);
-		return (printf("Error: %s file cannot be opened\n", label), 0);
+		return (printf("Error\n%s file cannot be opened\n", label), 0);
 	}
 	if (strcmp(label, "NO") == 0)
 		data->conf.no = trimmed;
